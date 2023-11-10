@@ -1,6 +1,22 @@
-# music-app
+# music-app from Complete Vue Developer 2023: Zero to Mastery (Pinia, Vitest)
 
 This template should help get you started developing with Vue 3 in Vite.
+
+## Master Project from the Course
+
+This project is for learning the new Vue 3 features and the new Vue 3 ecosystem.
+
+## Content
+
+- Vue 3 Option API and Composition API
+- Router
+- Pinia
+- Vitest
+- Vite
+- Cypress
+- Animations
+- Tailwind CSS
+- ESLint
 
 ## Recommended IDE Setup
 
