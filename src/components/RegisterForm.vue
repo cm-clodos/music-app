@@ -27,6 +27,16 @@
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded" />
             <ErrorMessage class="text-red-600" name="age" />
         </div>
+        <!--User Category-->
+        <div class="mb-3">
+            <label class="inline-block mb-2">User Category</label>
+            <vee-field as="select" name="userCategory"
+                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded">
+                <option value="Listener">Listener</option>
+                <option value="Artist">Artist</option>
+            </vee-field>
+            <ErrorMessage class="text-red-600" name="userCategory" />
+        </div>
         <!-- Password -->
         <div class="mb-3">
             <label class="inline-block mb-2">Password</label>
@@ -85,6 +95,7 @@ export default {
                 name: 'required|min:3|max:100|alpha_spaces',
                 email: 'required|min:3|max:100|email',
                 age: 'required|min_value:18|max_value:100',
+                userCategory: 'required',
                 password: 'required|min:9|max:100|excluded:password',
                 confirmPassword: 'password_mismatch:@password',
                 country: 'required|country_excluded:Antarctica',
@@ -92,7 +103,8 @@ export default {
             },
 
             userData: {
-                country: 'USA'
+                country: 'USA',
+                userCategory: 'Listener'
             },
             reg_in_submission: false,
             reg_show_alert: false,
@@ -131,6 +143,7 @@ export default {
                     name: values.name,
                     email: values.email,
                     age: values.age,
+                    userCategory: values.userCategory,
                     country: values.country,
                 })
             } catch (error) {
