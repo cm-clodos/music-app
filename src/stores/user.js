@@ -26,6 +26,17 @@ export default defineStore('user', {
       })
 
       this.userLoggedIn = true
+    },
+    async authenticate(values) {
+      const userCred = await auth.signInWithEmailAndPassword(values.email, values.password)
+      console.log(userCred)
+      this.userLoggedIn = true
+    },
+    async signOut() {
+      // entfernt den Token aus dem LocalStorage
+      const userCred = await auth.signOut()
+      console.log(userCred)
+      this.userLoggedIn = false
     }
   }
 })

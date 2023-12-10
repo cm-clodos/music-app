@@ -143,6 +143,9 @@ export default {
             this.reg_alert_msg = "Success! Your account has been created.";
 
             console.log(values);
+
+            // lädt die Seite neu 
+            window.location.reload();
         },
     }
 
