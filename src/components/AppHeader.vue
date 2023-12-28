@@ -22,7 +22,7 @@
                         </li>
 
                         <li>
-                            <a class="px-2 text-white" href="#" @click.prevent="this.userStore.signOut">Logout</a>
+                            <a class="px-2 text-white" href="#" @click.prevent="signOut">Logout</a>
                         </li>
                     </template>
 
@@ -47,6 +47,13 @@ export default {
             this.modalStore.isOpen = !this.modalStore.isOpen;
             console.log(this.modalStore.isOpen);
         },
+        signOut() {
+            this.userStore.signOut();
+            if (this.$route.meta.requiresAuth) {
+                this.$router.push({ name: 'home' });
+            }
+
+        }
     },
 };
 </script>
