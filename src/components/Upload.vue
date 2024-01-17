@@ -44,6 +44,7 @@ export default {
             uploads: [],
         }
     },
+    props: ['addSong'],
     methods: {
         upload($event) {
             this.is_dragover = false;
@@ -102,7 +103,11 @@ export default {
                     song.url = await uploadTask.snapshot.ref.getDownloadURL()
 
                     // speichert Song in DB.. set() kann id mitgeben add() generiert automatische id
-                    await songsCollection.add(song)
+                    const songRef = await songsCollection.add(song)
+                    const songSnapshot = await songRef.get()
+
+                    // fügt neuen Song zur Liste hinzu (muss ein snapshot sein!)
+                    this.addSong(songSnapshot)
 
                     this.uploads[uploadIndex].variant = 'bg-green-400'
                     this.uploads[uploadIndex].icon = 'fas fa-check'
