@@ -40,6 +40,7 @@
 import { songsCollection } from '@/includes/firebase'
 import AppSongItem from '@/components/SongItem.vue'
 
+
 export default {
   name: 'HomeView',
   components: {
@@ -48,19 +49,71 @@ export default {
   data() {
     return {
       songs: [],
+      maxPerPage: 25,
+      pendingRequest: false
     }
   },
   async created() {
-    const snapshots = await songsCollection.get();
+    await this.getSongs()
 
-    snapshots.forEach((document) => {
-      this.songs.push({
-        docID: document.id,
-        ...document.data()
-      })
-    })
-
+    window.addEventListener('scroll', this.handelScroll)
   },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handelScroll)
+  },
+  methods: {
+    handelScroll() {
+      const { scrollTop, offsetHeight } = document.documentElement
+      const { innerHeight } = window
+
+      // Berechnen, ob wir am Ende der Seite sind
+      const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
+
+      if (bottomOfWindow) {
+        this.getSongs()
+      }
+
+    },
+    async getSongs() {
+      if (this.pendingRequest) {
+        return
+      }
+      this.pendingRequest = true
+
+      let snapshots;
+
+      // Wenn wir bereits Songs haben, dann holen wir den letzten Song
+      if (this.songs.length) {
+        // den letzten Song holen
+        const lastDoc = await songsCollection
+          .doc(this.songs[this.songs.length - 1].docID)
+          .get()
+
+        // nach dem letzten Song weitere Songs holen
+        snapshots = await songsCollection
+          .orderBy('modified_name')
+          .startAfter(lastDoc)
+          .limit(this.maxPerPage)
+          .get();
+      } else {
+        // Wenn wir noch keine Songs haben, dann holen wir die ersten Songs
+        snapshots = await songsCollection
+          .orderBy('modified_name')
+          .limit(this.maxPerPage)
+          .get();
+
+      }
+      snapshots.forEach((document) => {
+        this.songs.push({
+          docID: document.id,
+          ...document.data()
+        })
+      })
+
+      this.pendingRequest = false
+    }
+  },
+
 
 }
 </script>
